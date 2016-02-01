@@ -24,4 +24,8 @@ void loop () {
   if ( rx.msgReady ) {
     // Do something.
   }
+
+  // Process the received values
+
+  // Update the outputs
 }
