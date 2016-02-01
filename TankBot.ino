@@ -16,16 +16,25 @@ void setup () {
 
   // Wait for the serial port(s) to wake up
   delay(1500);
+  // Try while(!Serial);
   debugprint(DEBUG_TRACE, "Setup complete!");
   digitalWrite(LEDPIN, LOW);  
 }
 
 void loop () {
-  if ( rx.msgReady ) {
-    // Do something.
-  }
-
   // Process the received values
+
+  // Handle track motion/steering
+  // Translate +ELEV into +LTRACK and +RTRACK (move fwd)
+  // Translate -ELEV into -LTRACK and -RTRACK (move rev)
+  // Translate +AIL into +LTRACK and -RTRACK (turn right)
+  // Translate -AIL into -LTRACK and +RTRACK (turn left)
+
+  // Handle camera motion
+  // Translate +THRO into -TILT
+  // Translate -THRO into +TILT
+  // Translate +RUDD into +PAN
+  // Translate -RUDD into -PAN
 
   // Update the outputs
 }
