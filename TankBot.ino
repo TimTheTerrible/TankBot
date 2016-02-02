@@ -1,23 +1,31 @@
 #include "debugprint.h"
 #include "spektrum.h"
 
+#define VERSION "0.0.1"
+
 #define LEDPIN 13
 
-SpektrumRx rx;
-
 void setup () {
+  // Enable debug output
+  Debug = DEBUG_ALL;
+
+  // Set up the status LED and turn it on
   pinMode(LEDPIN, OUTPUT);
   digitalWrite(LEDPIN, HIGH);
 
+  // Start the serial console port
   Serial.begin(115200);
 
+  // Wait for the it to wake up
+  while(!Serial);
+  
+  debugprint(DEBUG_TRACE, "TankBot %s", VERSION);
+  
   // Set up the receiver
-  rx.begin(&Serial1);
+  rx.begin();
 
-  // Wait for the serial port(s) to wake up
-  delay(1500);
-  // Try while(!Serial);
-  debugprint(DEBUG_TRACE, "Setup complete!");
+  debugprint(DEBUG_TRACE, "Setup is complete!");
+  // Shut off the status LED
   digitalWrite(LEDPIN, LOW);  
 }
 
