@@ -4,7 +4,7 @@
 
 #define MAX_MSG_LEN 16
 
-#define SRX_CHAN_MASK    0xF800
+#define SRX_CHAN_MASK    0x7800
 #define SRX_VAL_MASK_LEN 11
 #define SRX_VAL_MASK     0x07FF
 
@@ -53,7 +53,7 @@ int main(int argc, char** argv)
     0b00101010, 0b11001001,
     0b00110010, 0b01010010,
     0b00111100, 0b00100100,
-    0b01000011, 0b11100100,
+    0b01000111, 0b11111111,
   };
 
   for ( i = 0; i < MAX_MSG_LEN; i += 2) {
@@ -74,3 +74,4 @@ int main(int argc, char** argv)
     printf("CHAN: %4d VAL: %4d\n\n", channelNum, channelVal);
   }
 }
+
