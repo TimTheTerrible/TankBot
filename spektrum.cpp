@@ -60,8 +60,8 @@ void SpektrumRx::parse( char * input) {
     debugprint(DEBUG_TRACE, "msgWord: %4.4hx %s:%s", msgWord, bMSB, bLSB);
 
     // Calculate the channel number and value
-    int channelNum = ( msgWord & 0xF000 ) >> 12;
-    int channelVal = msgWord & 0x0FFF;
+    int channelNum = ( msgWord & SRX_CHAN_MASK ) >> SRX_VAL_MASK_LEN;
+    int channelVal = msgWord & SRX_VAL_MASK;
     debugprint(DEBUG_TRACE, "CHAN: %4.4d VAL: %4.4d", channelNum, channelVal);
     // 0 2 1 
   }
