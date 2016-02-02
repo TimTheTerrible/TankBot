@@ -1,23 +1,10 @@
 #include <HardwareSerial.h>
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
 #include "debugprint.h"
 #include "spektrum.h"
-#include <stdio.h>      /* printf */
-#include <string.h>     /* strcat */
-#include <stdlib.h>     /* strtol */
-
-const char *byte_to_binary(int x)
-{
-    static char b[9];
-    b[0] = '\0';
-
-    int z;
-    for (z = 128; z > 0; z >>= 1)
-    {
-        strcat(b, ((x & z) == z) ? "1" : "0");
-    }
-
-    return b;
-}
 
 SpektrumRx rx;
 
@@ -25,6 +12,33 @@ int msgIndex = 0;
 int rxMsgLen = MAX_MSG_LEN;
 char inputBuffer[MAX_MSG_LEN];
 char prevByte;
+
+/*
+ * Serial Port Handler
+ */
+
+void serialEvent1() {
+  //debugprint(DEBUG_TRACE, "serialEvent()!");
+
+  // Read the incoming data
+  while (Serial1.available()) {
+
+    // get the new byte:
+    char inByte = (char)Serial1.read();
+
+    // add it to the input buffer
+    inputBuffer[msgIndex++] = inByte;
+  }
+
+  if ( msgIndex == rxMsgLen ) {
+    rx.parse(inputBuffer);
+    msgIndex = 0;
+  }
+}
+
+/*
+ * SpektrumRx Class Methods
+ */
 
 bool SpektrumRx::begin () {
   // Set up the serial port
@@ -38,14 +52,15 @@ bool SpektrumRx::begin () {
   return true;
 }
 
-void SpektrumRx::parse( char * input) {
+void SpektrumRx::parse( uint8_t * input) {
   char bMSB[9];
   char bLSB[9];
+  char bWord[17];
 
   debugprint(DEBUG_TRACE, "Parsing new message...");
   
-  // Parse the message
   debugprint(DEBUG_TRACE, "HDR: %2.2hx:%2.2hx", input[0], input[1]);
+
   for ( int i = 2; i < MAX_MSG_LEN; i += 2) {
     
     // What are the two bytes?
@@ -54,16 +69,50 @@ void SpektrumRx::parse( char * input) {
     debugprint(DEBUG_TRACE, "MSB: %2.2hx %s LSB: %2.2hx %s", input[i], bMSB, input[i+1], bLSB);
     
     // Assemble the bytes into a word
-    long msgWord = input[i] * 256 + input[i+1];
-    strncpy(bMSB, byte_to_binary(msgWord >> 8), 9);
-    strncpy(bLSB, byte_to_binary(msgWord & 0x0FFF), 9);
-    debugprint(DEBUG_TRACE, "msgWord: %4.4hx %s:%s", msgWord, bMSB, bLSB);
+    uint16_t msgWord = input[i] << 8; msgWord = msgWord | input[i+1];
+    strncpy(bWord, word_to_binary(msgWord), 17);
+    debugprint(DEBUG_TRACE, "msgWord: %4.4hx %s", msgWord, bWord);
 
     // Calculate the channel number and value
     int channelNum = ( msgWord & SRX_CHAN_MASK ) >> SRX_VAL_MASK_LEN;
     int channelVal = msgWord & SRX_VAL_MASK;
-    debugprint(DEBUG_TRACE, "CHAN: %4.4d VAL: %4.4d", channelNum, channelVal);
-    // 0 2 1 
+    debugprint(DEBUG_TRACE, "CHAN: %4d VAL: %4d", channelNum, channelVal);
+
+    // TODO: clean up the value of channelVal
+
+    // Store the value in a channel
+    switch ( channelNum ) {
+      case CHAN_AILERON:
+        m_aileron = channelVal;
+        break;
+      case CHAN_ELEVATOR:
+        m_elevator = channelVal;
+        break;
+      case CHAN_THROTTLE:
+        m_throttle = channelVal;
+        break;
+      case CHAN_RUDDER:
+        m_rudder = channelVal;
+        break;
+      case CHAN_AUX1:
+        m_aux1 = channelVal;
+        break;
+      case CHAN_AUX2:
+        m_aux2 = channelVal;
+        break;
+      case CHAN_AUX3:
+        m_aux3 = channelVal;
+        break;
+      case CHAN_AUX4:
+        m_aux4 = channelVal;
+        break;
+      case CHAN_AUX5:
+        m_aux5 = channelVal;
+        break;
+      default:
+        deubgprint(DEBUG_ERROR, "Invalid channel number: %d", channelNum);
+        break;
+    }
   }
 }
 
@@ -103,25 +152,3 @@ int SpektrumRx::aux5() {
   return m_aux5;
 }
 
-/*
- * Serial Port Handler
- */
-
-void serialEvent1() {
-  //debugprint(DEBUG_TRACE, "serialEvent()!");
-
-  // Read the incoming data
-  while (Serial1.available()) {
-
-    // get the new byte:
-    char inByte = (char)Serial1.read();
-
-    // add it to the input buffer
-    inputBuffer[msgIndex++] = inByte;
-  }
-
-  if ( msgIndex == rxMsgLen ) {
-    rx.parse(inputBuffer);
-    msgIndex = 0;
-  }
-}
