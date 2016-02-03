@@ -9,7 +9,7 @@ long itsShowTime = 0;
 
 void setup () {
   // Enable debug output
-  // Debug = DEBUG_ERROR; // leave it at the default
+  // Debug = DEBUG_ALL; // leave it at the default
 
   // Set up the status LED and turn it on
   pinMode(LEDPIN, OUTPUT);
@@ -34,11 +34,14 @@ void setup () {
 void showChannels () {
   
   if ( millis() > itsShowTime ) {
+
+    SpektrumChannels channels = rx.getChannels();
     
-    debugprint(DEBUG_TRACE, "AIL  ELE  THR  RUD  GEAR AUX1 AUX2 AUX3 AUX4");
-    debugprint(DEBUG_TRACE, "%4d %4d %4d %4d %4d %4d %4d %4d %4d ",
-      rx.aileron(), rx.elevator(), rx.throttle(), rx.rudder(),
-      rx.gear(), rx.aux1(), rx.aux2(), rx.aux3(), rx.aux4()
+    debugprint(DEBUG_TRACE, "AIL  ELE  THR  RUD  GEAR AUX1 AUX2 AUX3 AUX4 AUX5 AUX6 AUX7 AUX8");
+    debugprint(DEBUG_TRACE, "%4d %4d %4d %4d %4d %4d %4d %4d %4d %4d %4d %4d %4d ",
+      channels.aileron, channels.elevator, channels.throttle, channels.rudder,
+      channels.gear, channels.aux1, channels.aux2, channels.aux3, channels.aux4,
+      channels.aux5, channels.aux6, channels.aux7, channels.aux8
     );
     
     itsShowTime = millis() + 1000;
