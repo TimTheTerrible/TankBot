@@ -9,14 +9,12 @@
 
 SpektrumRx rx;
 
-int msgIndex = 0;
-int rxMsgLen = MAX_MSG_LEN;
-uint8_t inputBuffer[MAX_MSG_LEN];
-char prevByte;
-
 /*
  * Serial Port Handler
  */
+
+int msgIndex = 0;
+uint8_t inputBuffer[MAX_MSG_LEN];
 
 void serialEvent1() {
   //debugprint(DEBUG_SERIAL, "serialEvent()!");
@@ -25,13 +23,13 @@ void serialEvent1() {
   while (Serial1.available()) {
 
     // get the new byte:
-    char inByte = (char)Serial1.read();
+    uint8_t inByte = (uint8_t)Serial1.read();
 
     // add it to the input buffer
     inputBuffer[msgIndex++] = inByte;
   }
 
-  if ( msgIndex == rxMsgLen ) {
+  if ( msgIndex == MAX_MSG_LEN ) {
     rx.parse(inputBuffer);
     msgIndex = 0;
   }
@@ -51,6 +49,12 @@ bool SpektrumRx::begin () {
   
   debugprint(DEBUG_TRACE, "Receiver intialized!");
   return true;
+}
+
+SpektrumChannels SpektrumRx::getChannels () {
+  const SpektrumChannels theChannels = m_channels;
+
+  return theChannels;
 }
 
 void SpektrumRx::parse( uint8_t * input) {
@@ -84,72 +88,48 @@ void SpektrumRx::parse( uint8_t * input) {
     // Store the value in a channel
     switch ( channelNum ) {
       case CHAN_AILERON:
-        m_aileron = channelVal;
+        m_channels.aileron = channelVal;
         break;
       case CHAN_ELEVATOR:
-        m_elevator = channelVal;
+        m_channels.elevator = channelVal;
         break;
       case CHAN_THROTTLE:
-        m_throttle = channelVal;
+        m_channels.throttle = channelVal;
         break;
       case CHAN_RUDDER:
-        m_rudder = channelVal;
+        m_channels.rudder = channelVal;
         break;
-      case CHAN_GEAR: // D
-        m_gear = channelVal;
+      case CHAN_GEAR:
+        m_channels.gear = channelVal;
         break;
-      case CHAN_AUX1: // E
-        m_aux1 = channelVal;
+      case CHAN_AUX1:
+        m_channels.aux1 = channelVal;
         break;
-      case CHAN_AUX2: // C
-        m_aux2 = channelVal;
+      case CHAN_AUX2:
+        m_channels.aux2 = channelVal;
         break;
-      case CHAN_AUX3: // F
-        m_aux3 = channelVal;
+      case CHAN_AUX3:
+        m_channels.aux3 = channelVal;
         break;
-      case CHAN_AUX4: // RKnb
-        m_aux4 = channelVal;
+      case CHAN_AUX4:
+        m_channels.aux4 = channelVal;
+        break;
+      case CHAN_AUX5:
+        m_channels.aux5 = channelVal;
+        break;
+      case CHAN_AUX6:
+        m_channels.aux6 = channelVal;
+        break;
+      case CHAN_AUX7:
+        m_channels.aux7 = channelVal;
+        break;
+      case CHAN_AUX8:
+        m_channels.aux8 = channelVal;
         break;
       default:
-        debugprint(DEBUG_PARSE, "Invalid channel number: %d", channelNum);
+        debugprint(DEBUG_ERROR, "Invalid channel number: %d", channelNum);
         break;
     }
   }
-}
-
-int SpektrumRx::aileron() {
-  return m_aileron;
-}
-
-int SpektrumRx::elevator() {
-  return m_elevator;
-}
-
-int SpektrumRx::rudder() {
-  return m_rudder;
-}
-
-int SpektrumRx::throttle() {
-  return m_throttle;
-}
-
-int SpektrumRx::gear() {
-  return m_gear;
-}
-
-int SpektrumRx::aux1() {
-  return m_aux1;
-}
-
-int SpektrumRx::aux2() {
-  return m_aux2;
-}
-
-int SpektrumRx::aux3() {
-  return m_aux3;
-}
-
-int SpektrumRx::aux4() {
-  return m_aux4;
 }
 

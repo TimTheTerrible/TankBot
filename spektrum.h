@@ -17,10 +17,30 @@
 #define CHAN_ELEVATOR     4
 #define CHAN_RUDDER       6
 #define CHAN_GEAR         8
-#define CHAN_AUX1         10
 #define CHAN_AUX2         12
+#define CHAN_AUX1         10
 #define CHAN_AUX3         14
 #define CHAN_AUX4         16
+#define CHAN_AUX5         18
+#define CHAN_AUX6         20
+#define CHAN_AUX7         22
+#define CHAN_AUX8         24
+
+struct SpektrumChannels {
+  int aileron = 0;
+  int elevator = 0;
+  int rudder = 0;
+  int throttle = 0;
+  int gear = 0;
+  int aux1 = 0;
+  int aux2 = 0;
+  int aux3 = 0;
+  int aux4 = 0;
+  int aux5 = 0;
+  int aux6 = 0;
+  int aux7 = 0;
+  int aux8 = 0;
+};
 
 class SpektrumRx
 {
@@ -28,28 +48,12 @@ class SpektrumRx
 
   bool begin();
   void parse( uint8_t * );
-
-  int aileron();
-  int elevator();
-  int rudder();
-  int throttle();
-  int gear();
-  int aux1();
-  int aux2();
-  int aux3();
-  int aux4();
+  SpektrumChannels getChannels();
 
   private:
 
-  int m_aileron = 0;
-  int m_elevator = 0;
-  int m_rudder = 0;
-  int m_throttle = 0;
-  int m_gear = 0;
-  int m_aux1 = 0;
-  int m_aux2 = 0;
-  int m_aux3 = 0;
-  int m_aux4 = 0;
+  SpektrumChannels m_channels;
+
 };
 
 extern SpektrumRx rx;
