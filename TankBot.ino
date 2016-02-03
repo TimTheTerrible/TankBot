@@ -5,9 +5,11 @@
 
 #define LEDPIN 13
 
+long itsShowTime = 0;
+
 void setup () {
   // Enable debug output
-  Debug = DEBUG_ALL;
+  // Debug = DEBUG_ERROR; // leave it at the default
 
   // Set up the status LED and turn it on
   pinMode(LEDPIN, OUTPUT);
@@ -29,8 +31,23 @@ void setup () {
   digitalWrite(LEDPIN, LOW);  
 }
 
+void showChannels () {
+  
+  if ( millis() > itsShowTime ) {
+    
+    debugprint(DEBUG_TRACE, "AIL  ELE  THR  RUD  GEAR AUX1 AUX2 AUX3 AUX4");
+    debugprint(DEBUG_TRACE, "%4d %4d %4d %4d %4d %4d %4d %4d %4d ",
+      rx.aileron(), rx.elevator(), rx.throttle(), rx.rudder(),
+      rx.gear(), rx.aux1(), rx.aux2(), rx.aux3(), rx.aux4()
+    );
+    
+    itsShowTime = millis() + 1000;
+  }
+}
+  
 void loop () {
-  // Process the received values
+
+  showChannels();
 
   // Handle track motion/steering
   // Translate +ELEV into +LTRACK and +RTRACK (move fwd)
