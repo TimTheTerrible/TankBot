@@ -17,7 +17,7 @@ int msgIndex = 0;
 uint8_t inputBuffer[MAX_MSG_LEN];
 
 void serialEvent1() {
-  //debugprint(DEBUG_SERIAL, "serialEvent()!");
+  debugprint(DEBUG_SERIAL, "serialEvent()!");
 
   // Read the incoming data
   while (Serial1.available()) {
@@ -43,10 +43,6 @@ bool SpektrumRx::begin () {
   // Set up the serial port
   Serial1.begin(115200);
 
-  // TODO: figure out what type of tx we're bound to,
-  // which is the same as saying, how many channels 
-  // should we expect to decode?
-  
   debugprint(DEBUG_TRACE, "Receiver intialized!");
   return true;
 }
@@ -57,6 +53,29 @@ SpektrumChannels SpektrumRx::getChannels () {
   return theChannels;
 }
 
+/*
+ * Spektrum Sattelite Receiver Message Format
+ * 
+ * The receiver sends 16-byte frames. Each frame
+ * contains two header bytes and six channel byte
+ * pairs. The ordering of channles is arbitrary.
+ * For transmitters with more than six channels,
+ * multiple frames are sent, six channels at a time. 
+ * All channels are eventually sent.
+ * 
+ * Channel numbers start at 0 and go to 24, by two. 
+ * The channel values go from 0 to 2048.
+ * 
+ * FEDCBA0987654321
+ * 0111110000000000 Channel Number
+ * 0000001111111111 Channle Value
+ * 
+ * TODO: what's the value/meaning of the header bytes?
+ * TODO: unused channels seem to always be 1024. try other radios and see what happens.
+ * TODO: channel 24 seems to be a tenth channel, or maybe RSSI
+ * 
+ */
+ 
 void SpektrumRx::parse( uint8_t * input) {
   char bMSB[9];
   char bLSB[9];
