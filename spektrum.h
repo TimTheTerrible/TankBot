@@ -17,8 +17,8 @@
 #define CHAN_ELEVATOR     4
 #define CHAN_RUDDER       6
 #define CHAN_GEAR         8
-#define CHAN_AUX2         12
 #define CHAN_AUX1         10
+#define CHAN_AUX2         12
 #define CHAN_AUX3         14
 #define CHAN_AUX4         16
 #define CHAN_AUX5         18
