@@ -1,4 +1,5 @@
 #include <HardwareSerial.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -10,7 +11,7 @@ SpektrumRx rx;
 
 int msgIndex = 0;
 int rxMsgLen = MAX_MSG_LEN;
-char inputBuffer[MAX_MSG_LEN];
+uint8_t inputBuffer[MAX_MSG_LEN];
 char prevByte;
 
 /*
@@ -18,7 +19,7 @@ char prevByte;
  */
 
 void serialEvent1() {
-  //debugprint(DEBUG_TRACE, "serialEvent()!");
+  //debugprint(DEBUG_SERIAL, "serialEvent()!");
 
   // Read the incoming data
   while (Serial1.available()) {
@@ -57,26 +58,26 @@ void SpektrumRx::parse( uint8_t * input) {
   char bLSB[9];
   char bWord[17];
 
-  debugprint(DEBUG_TRACE, "Parsing new message...");
+  debugprint(DEBUG_PARSE, "\nParsing new message...");
   
-  debugprint(DEBUG_TRACE, "HDR: %2.2hx:%2.2hx", input[0], input[1]);
+  debugprint(DEBUG_PARSE, "HDR: %2.2hx:%2.2hx", input[0], input[1]);
 
   for ( int i = 2; i < MAX_MSG_LEN; i += 2) {
     
     // What are the two bytes?
     strncpy(bMSB, byte_to_binary(input[i]), 9);
     strncpy(bLSB, byte_to_binary(input[i+1]), 9);
-    debugprint(DEBUG_TRACE, "MSB: %2.2hx %s LSB: %2.2hx %s", input[i], bMSB, input[i+1], bLSB);
+    debugprint(DEBUG_PARSE, "MSB: %2.2hx %s LSB: %2.2hx %s", input[i], bMSB, input[i+1], bLSB);
     
     // Assemble the bytes into a word
     uint16_t msgWord = input[i] << 8; msgWord = msgWord | input[i+1];
     strncpy(bWord, word_to_binary(msgWord), 17);
-    debugprint(DEBUG_TRACE, "msgWord: %4.4hx %s", msgWord, bWord);
+    debugprint(DEBUG_PARSE, "msgWord: %4.4hx %s", msgWord, bWord);
 
     // Calculate the channel number and value
     int channelNum = ( msgWord & SRX_CHAN_MASK ) >> SRX_VAL_MASK_LEN;
     int channelVal = msgWord & SRX_VAL_MASK;
-    debugprint(DEBUG_TRACE, "CHAN: %4d VAL: %4d", channelNum, channelVal);
+    debugprint(DEBUG_PARSE, "CHAN: %4d VAL: %4d", channelNum, channelVal);
 
     // TODO: clean up the value of channelVal
 
@@ -94,23 +95,23 @@ void SpektrumRx::parse( uint8_t * input) {
       case CHAN_RUDDER:
         m_rudder = channelVal;
         break;
-      case CHAN_AUX1:
+      case CHAN_GEAR: // D
+        m_gear = channelVal;
+        break;
+      case CHAN_AUX1: // E
         m_aux1 = channelVal;
         break;
-      case CHAN_AUX2:
+      case CHAN_AUX2: // C
         m_aux2 = channelVal;
         break;
-      case CHAN_AUX3:
+      case CHAN_AUX3: // F
         m_aux3 = channelVal;
         break;
-      case CHAN_AUX4:
+      case CHAN_AUX4: // RKnb
         m_aux4 = channelVal;
         break;
-      case CHAN_AUX5:
-        m_aux5 = channelVal;
-        break;
       default:
-        deubgprint(DEBUG_ERROR, "Invalid channel number: %d", channelNum);
+        debugprint(DEBUG_PARSE, "Invalid channel number: %d", channelNum);
         break;
     }
   }
@@ -132,6 +133,10 @@ int SpektrumRx::throttle() {
   return m_throttle;
 }
 
+int SpektrumRx::gear() {
+  return m_gear;
+}
+
 int SpektrumRx::aux1() {
   return m_aux1;
 }
@@ -146,9 +151,5 @@ int SpektrumRx::aux3() {
 
 int SpektrumRx::aux4() {
   return m_aux4;
-}
-
-int SpektrumRx::aux5() {
-  return m_aux5;
 }
 

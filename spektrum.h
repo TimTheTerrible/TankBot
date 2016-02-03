@@ -1,50 +1,55 @@
+#include <stdint.h>
+
 #ifndef __spektrum_h__
 #define __spektrum_h__
 
-#define MAX_MSG_LEN 16
+#define DEBUG_PARSE       0x0100
+#define DEBUG_SERIAL      0x0200
 
-#define SRX_CHAN_MASK    0xFC00
-#define SRX_VAL_MASK_LEN 10
-#define SRX_VAL_MASK     0x03FF
+#define MAX_MSG_LEN       16
 
-#define CHAN_AILERON  1
-#define CHAN_ELEVATOR 2
-#define CHAN_THROTTLE 3
-#define CHAN_RUDDER   4
-#define CHAN_AUX1     5
-#define CHAN_AUX2     6
-#define CHAN_AUX3     7
-#define CHAN_AUX4     8
-#define CHAN_AUX5     9
+#define SRX_CHAN_MASK     0x7800
+#define SRX_VAL_MASK_LEN  10
+#define SRX_VAL_MASK      0x07FF
+
+#define CHAN_THROTTLE     0
+#define CHAN_AILERON      2
+#define CHAN_ELEVATOR     4
+#define CHAN_RUDDER       6
+#define CHAN_GEAR         8
+#define CHAN_AUX2         12
+#define CHAN_AUX1         10
+#define CHAN_AUX3         14
+#define CHAN_AUX4         16
 
 class SpektrumRx
 {
   public:
 
   bool begin();
-  void parse( char * );
+  void parse( uint8_t * );
 
   int aileron();
   int elevator();
   int rudder();
   int throttle();
+  int gear();
   int aux1();
   int aux2();
   int aux3();
   int aux4();
-  int aux5();
 
   private:
 
-  int m_aileron;
-  int m_elevator;
-  int m_rudder;
-  int m_throttle;
-  int m_aux1;
-  int m_aux2;
-  int m_aux3;
-  int m_aux4;
-  int m_aux5;
+  int m_aileron = 0;
+  int m_elevator = 0;
+  int m_rudder = 0;
+  int m_throttle = 0;
+  int m_gear = 0;
+  int m_aux1 = 0;
+  int m_aux2 = 0;
+  int m_aux3 = 0;
+  int m_aux4 = 0;
 };
 
 extern SpektrumRx rx;
