@@ -23,7 +23,7 @@ uint32_t itsShowTime = 0;
 
 void setup () {
   // Enable debug output
-  Debug = DEBUG_NONE; // leave it at the default
+  // Debug = DEBUG_TRACK;
 
   // Set up the status LED and turn it on
   pinMode(LEDPIN, OUTPUT);
@@ -48,7 +48,7 @@ void setup () {
 
   // Set up the track driver
   tracks.begin(TRACK_SPEED_PIN, TRACK_STEER_PIN, TRACK_GEAR_PIN);
-  tracks.setSpeedScale(10,170);
+  tracks.setThrottleScale(10,170);
   tracks.setSteeringScale(10,170);
 
   // Set up the headlight
@@ -78,16 +78,49 @@ void loop () {
     // Reset the delay to 1s
     itsShowTime = millis() + 1000;
   }
-  
+/*
   // Handle track motion/steering
-  if ( channels.gear > 1200 ) {
-    tracks.setSpeed(channels.throttle);
-    tracks.setSteering(channels.rudder);
+  if ( channels.gear < 500 ) {
+    // Put it in park
+    tracks.setThrottleScale(90,90);
+    tracks.setSteeringScale(90,90);
+  }
+  else if ( channels.gear > 769 && channels.gear < 1280 ) {
+    // Low Gear
+    tracks.setThrottleScale(65,115);
+    tracks.setSteeringScale(65,115);
   }
   else {
-    tracks.setSpeed(1024);
-    tracks.setSteering(1024);
+    // Full throttle
+    tracks.setThrottleScale(45,135);
+    tracks.setSteeringScale(45,135);
   }
+*/  
+  // Handle track motion/steering
+  int gearPos = rx.switchPos(channels.gear, 3);
+  
+  switch ( gearPos ) {
+    case 0:
+      tracks.setThrottleScale(90,90);
+      tracks.setSteeringScale(90,90);
+      break;
+    case 1:
+      // Low Gear
+      tracks.setThrottleScale(65,115);
+      tracks.setSteeringScale(65,115);
+      break;
+    case 2:
+      // Full throttle
+      tracks.setThrottleScale(45,135);
+      tracks.setSteeringScale(45,135);
+      break;
+    default:
+      debugprint(DEBUG_ERROR, "Invalid switch position: %d", gearPos);
+      break;
+  }
+
+  tracks.setThrottle(channels.throttle);
+  tracks.setSteering(channels.rudder);
  
   // Handle camera motion
   pantilt.setPan(channels.aileron);

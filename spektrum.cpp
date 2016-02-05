@@ -110,14 +110,14 @@ void SpektrumRx::parse( uint8_t * input) {
 
     // Store the value in a channel
     switch ( channelNum ) {
+      case CHAN_THROTTLE:
+        m_channels.throttle = channelVal;
+        break;
       case CHAN_AILERON:
         m_channels.aileron = channelVal;
         break;
       case CHAN_ELEVATOR:
         m_channels.elevator = channelVal;
-        break;
-      case CHAN_THROTTLE:
-        m_channels.throttle = channelVal;
         break;
       case CHAN_RUDDER:
         m_channels.rudder = channelVal;
@@ -154,5 +154,81 @@ void SpektrumRx::parse( uint8_t * input) {
         break;
     }
   }
+}
+
+int switchBin ( int value ) {
+  if ( value < 768 )
+    return 0;
+  else if ( value > 800 && value < 1300 )
+    return 1;
+  else
+    return 2;
+}
+  
+int SpektrumRx::switchPos ( int channel, int poles ) {
+
+  int channelVal;
+  switch ( channel ) {
+    case CHAN_THROTTLE:
+      channelVal = m_channels.throttle;
+      break;
+    case CHAN_AILERON:
+      channelVal = m_channels.aileron;
+      break;
+    case CHAN_ELEVATOR:
+      channelVal = m_channels.aileron;
+      break;
+    case CHAN_RUDDER:
+      channelVal = m_channels.aileron;
+      break;
+    case CHAN_GEAR:
+      channelVal = m_channels.aileron;
+      break;
+    case CHAN_AUX1:
+      channelVal = m_channels.aux1;
+      break;
+    case CHAN_AUX2:
+      channelVal = m_channels.aux2;
+      break;
+    case CHAN_AUX3:
+      channelVal = m_channels.aux3;
+      break;
+    case CHAN_AUX4:
+      channelVal = m_channels.aux4;
+      break;
+    case CHAN_AUX5:
+      channelVal = m_channels.aux5;
+      break;
+    case CHAN_AUX6:
+      channelVal = m_channels.aux6;
+      break;
+    case CHAN_AUX7:
+      channelVal = m_channels.aux7;
+      break;
+    case CHAN_AUX8:
+      channelVal = m_channels.aux8;
+      break;
+    default:
+      debugprint(DEBUG_ERROR, "Invalid channel: %d", channel);
+      return 0;
+      break;
+  }
+
+  if ( poles == 2 ) {
+    return channelVal > 1024 ? 1 : 0;
+  }
+  else if ( poles == 3 ) {
+    if ( channelVal < 512 )
+      return 0;
+    else if ( channelVal < 1500 ) 
+      return 1;
+    else
+      return 2;
+  }
+  else {
+    debugprint(DEBUG_ERROR, "Invalid  number of poles: %d", poles);    
+  }
+  
+  return 0;
 }
 

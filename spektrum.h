@@ -25,11 +25,11 @@
 #define CHAN_AUX7         11
 #define CHAN_AUX8         12
 
-struct SpektrumChannels {
+typedef struct SpektrumChannels {
+  int throttle = 1024;
   int aileron = 1024;
   int elevator = 1024;
   int rudder = 1024;
-  int throttle = 1024;
   int gear = 1024;
   int aux1 = 1024;
   int aux2 = 1024;
@@ -39,7 +39,7 @@ struct SpektrumChannels {
   int aux6 = 1024;
   int aux7 = 1024;
   int aux8 = 1024;
-};
+} SpektrumChannels;
 
 class SpektrumRx
 {
@@ -48,7 +48,7 @@ class SpektrumRx
   bool begin();
   void parse( uint8_t * );
   SpektrumChannels getChannels();
-  const char * lastFrame();
+  int switchPos( int, int );
 
   private:
 
