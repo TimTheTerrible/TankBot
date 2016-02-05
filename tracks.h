@@ -10,8 +10,8 @@ class Tracks
   public:
 
   bool begin( int, int, int );
-  void setSpeed( int );
-  void setSpeedScale( int, int );
+  void setThrottle( int );
+  void setThrottleScale( int, int );
   void setSteering( int );
   void setSteeringScale( int, int );
   void setGear( int );
@@ -19,10 +19,12 @@ class Tracks
 
   private:
 
-  int m_speedScaleMin = 0;
-  int m_speedScaleMax = 180;
+  int m_throttleScaleMin = 0;
+  int m_throttleScaleMax = 180;
   int m_steeringScaleMin = 0;
   int m_steeringScaleMax = 180;
+  int m_gearScaleMin = 0;
+  int m_gearScaleMax = 180;
   
   Servo throttle;
   Servo steering;
