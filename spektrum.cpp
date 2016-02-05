@@ -63,12 +63,13 @@ SpektrumChannels SpektrumRx::getChannels () {
  * multiple frames are sent, six channels at a time. 
  * All channels are eventually sent.
  * 
- * Channel numbers start at 0 and go to 24, by two. 
+ * Channel numbers start at 0 and go to 12, with oddball
+ * THROTTLE at 16 for no apparent reason.
  * The channel values go from 0 to 2048.
  * 
  * FEDCBA0987654321
- * 0111110000000000 Channel Number
- * 0000001111111111 Channle Value
+ * 1111100000000000 Channel Number
+ * 0000011111111111 Channle Value
  * 
  * TODO: what's the value/meaning of the header bytes?
  * TODO: unused channels seem to always be 1024. try other radios and see what happens.
@@ -80,6 +81,9 @@ void SpektrumRx::parse( uint8_t * input) {
   char bMSB[9];
   char bLSB[9];
   char bWord[17];
+  uint16_t msgWord;
+  int channelNum;
+  int channelVal;
 
   debugprint(DEBUG_PARSE, "\nParsing new message...");
   
@@ -93,13 +97,13 @@ void SpektrumRx::parse( uint8_t * input) {
     debugprint(DEBUG_PARSE, "MSB: %2.2hx %s LSB: %2.2hx %s", input[i], bMSB, input[i+1], bLSB);
     
     // Assemble the bytes into a word
-    uint16_t msgWord = input[i] << 8; msgWord = msgWord | input[i+1];
+    msgWord = input[i] << 8; msgWord = msgWord | input[i+1];
     strncpy(bWord, word_to_binary(msgWord), 17);
     debugprint(DEBUG_PARSE, "msgWord: %4.4hx %s", msgWord, bWord);
 
     // Calculate the channel number and value
-    int channelNum = ( msgWord & SRX_CHAN_MASK ) >> SRX_VAL_MASK_LEN;
-    int channelVal = msgWord & SRX_VAL_MASK;
+    channelNum = msgWord >> SRX_VAL_MASK_LEN;
+    channelVal = msgWord & SRX_VAL_MASK;
     debugprint(DEBUG_PARSE, "CHAN: %4d VAL: %4d", channelNum, channelVal);
 
     // TODO: clean up the value of channelVal
