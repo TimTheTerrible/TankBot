@@ -24,7 +24,7 @@ void PanTilt::setPanScale(int min, int max) {
 }
 
 void PanTilt::setTilt( int angle ) {
-  debugprint(DEBUG_PANTILT, "pan angle set to %d", angle);
+  debugprint(DEBUG_PANTILT, "tilt angle set to %d", angle);
   tilt.write(map(angle, 2048, 0, m_tiltScaleMin, m_tiltScaleMax));
 }
 
@@ -35,7 +35,7 @@ void PanTilt::setTiltScale(int min, int max) {
 }
 
 void PanTilt::setRoll( int angle ) {
-  debugprint(DEBUG_PANTILT, "pan angle set to %d", angle);
+  debugprint(DEBUG_PANTILT, "roll angle set to %d", angle);
   roll.write(map(angle, 0, 2048, m_rollScaleMin, m_rollScaleMax));
 }
 
