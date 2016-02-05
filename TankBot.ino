@@ -10,7 +10,7 @@
 
 #define TRACK_SPEED_PIN  4
 #define TRACK_STEER_PIN  5
-#define TRACK_FLIP_PIN   6
+#define TRACK_GEAR_PIN   6
 
 #define GIMBAL_PAN_PIN   20
 #define GIMBAL_TILT_PIN  21
@@ -47,7 +47,7 @@ void setup () {
   pantilt.setRollScale(10,170);
 
   // Set up the track driver
-  tracks.begin(TRACK_SPEED_PIN, TRACK_STEER_PIN, TRACK_FLIP_PIN);
+  tracks.begin(TRACK_SPEED_PIN, TRACK_STEER_PIN, TRACK_GEAR_PIN);
   tracks.setSpeedScale(10,170);
   tracks.setSteeringScale(10,170);
 
@@ -88,7 +88,6 @@ void loop () {
     tracks.setSpeed(1024);
     tracks.setSteering(1024);
   }
-  // tracks.setFlip(channels.gear);
  
   // Handle camera motion
   pantilt.setPan(channels.aileron);
