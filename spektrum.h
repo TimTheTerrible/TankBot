@@ -26,19 +26,19 @@
 #define CHAN_AUX8         12
 
 struct SpektrumChannels {
-  int aileron = 0;
-  int elevator = 0;
-  int rudder = 0;
-  int throttle = 0;
-  int gear = 0;
-  int aux1 = 0;
-  int aux2 = 0;
-  int aux3 = 0;
-  int aux4 = 0;
-  int aux5 = 0;
-  int aux6 = 0;
-  int aux7 = 0;
-  int aux8 = 0;
+  int aileron = 1024;
+  int elevator = 1024;
+  int rudder = 1024;
+  int throttle = 1024;
+  int gear = 1024;
+  int aux1 = 1024;
+  int aux2 = 1024;
+  int aux3 = 1024;
+  int aux4 = 1024;
+  int aux5 = 1024;
+  int aux6 = 1024;
+  int aux7 = 1024;
+  int aux8 = 1024;
 };
 
 class SpektrumRx

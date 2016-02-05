@@ -1,2 +1,3 @@
 TankBot
-An AVR-based tracked robot for inspeting confined spaces
+
+An AVR-based tracked robot for inspection of confined spaces

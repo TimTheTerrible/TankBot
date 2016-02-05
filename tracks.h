@@ -11,16 +11,22 @@ class Tracks
 
   bool begin( int, int, int );
   void setSpeed( int );
+  void setSpeedScale( int, int );
   void setSteering( int );
-  void setFlip( int );
+  void setSteeringScale( int, int );
+  void setGear( int );
+  void setGearScale( int, int );
 
   private:
 
-  int m_speed;
-  int m_angle;
+  int m_speedScaleMin = 0;
+  int m_speedScaleMax = 180;
+  int m_steeringScaleMin = 0;
+  int m_steeringScaleMax = 180;
+  
   Servo throttle;
   Servo steering;
-  Servo flip;
+  Servo gear;
 };
 
 extern Tracks tracks;

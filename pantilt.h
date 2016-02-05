@@ -11,14 +11,21 @@ class PanTilt
 
   bool begin( int, int, int);
   void setPan( int );
+  void setPanScale( int, int );
   void setTilt( int );
+  void setTiltScale( int, int );
   void setRoll( int );
+  void setRollScale( int, int );
 
   private:
 
-  int m_pan;
-  int m_tilt;
-  int m_roll;
+  int m_panScaleMin = 0;
+  int m_panScaleMax = 180;
+  int m_tiltScaleMin = 0;
+  int m_tiltScaleMax = 180;
+  int m_rollScaleMin = 0;
+  int m_rollScaleMax = 180;
+
   Servo pan;
   Servo tilt;
   Servo roll;

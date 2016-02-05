@@ -23,7 +23,7 @@ uint32_t itsShowTime = 0;
 
 void setup () {
   // Enable debug output
-  // Debug = DEBUG_ALL; // leave it at the default
+  Debug = DEBUG_NONE; // leave it at the default
 
   // Set up the status LED and turn it on
   pinMode(LEDPIN, OUTPUT);
@@ -42,9 +42,14 @@ void setup () {
 
   // Set up the camera gimbal
   pantilt.begin(GIMBAL_PAN_PIN, GIMBAL_TILT_PIN, GIMBAL_ROLL_PIN);
+  pantilt.setPanScale(45,135);
+  pantilt.setTiltScale(10,170);
+  pantilt.setRollScale(10,170);
 
   // Set up the track driver
   tracks.begin(TRACK_SPEED_PIN, TRACK_STEER_PIN, TRACK_FLIP_PIN);
+  tracks.setSpeedScale(10,170);
+  tracks.setSteeringScale(10,170);
 
   // Set up the headlight
   pinMode(HEADLIGHT_PIN, OUTPUT);
