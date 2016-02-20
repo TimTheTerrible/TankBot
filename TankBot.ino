@@ -1,4 +1,5 @@
 #include <Wire.h>
+#include <Adafruit_PWMServoDriver.h>
 #include "myPWMServoDriver.h"
 
 #include "debugprint.h"
