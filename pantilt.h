@@ -1,7 +1,7 @@
 #ifndef __pantilit_h__
 #define __pantilit_h__
 
-#include <Servo.h>
+#include "myPWMServoDriver.h"
 
 #define DEBUG_PANTILT 0x2000
 
@@ -16,6 +16,7 @@ class PanTilt
   void setTiltScale( int, int );
   void setRoll( int );
   void setRollScale( int, int );
+  void showDebug();
 
   private:
 
@@ -26,9 +27,9 @@ class PanTilt
   int m_rollScaleMin = 0;
   int m_rollScaleMax = 180;
 
-  Servo pan;
-  Servo tilt;
-  Servo roll;
+  myPWMServo * pan;
+  myPWMServo * tilt;
+  myPWMServo * roll;
 };
 
 extern PanTilt pantilt;

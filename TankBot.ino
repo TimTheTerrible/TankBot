@@ -1,4 +1,6 @@
-#include <Servo.h>
+#include <Wire.h>
+#include "myPWMServoDriver.h"
+
 #include "debugprint.h"
 #include "spektrum.h"
 #include "pantilt.h"
@@ -8,13 +10,13 @@
 
 #define LEDPIN 13
 
-#define TRACK_SPEED_PIN  4
-#define TRACK_STEER_PIN  5
-#define TRACK_GEAR_PIN   6
+#define TRACK_SPEED_SERVO  0
+#define TRACK_STEER_SERVO  1
+#define TRACK_GEAR_SERVO   2
 
-#define GIMBAL_PAN_PIN   20
-#define GIMBAL_TILT_PIN  21
-#define GIMBAL_ROLL_PIN  22
+#define GIMBAL_PAN_SERVO   4
+#define GIMBAL_TILT_SERVO  5
+#define GIMBAL_ROLL_SERVO  6
 
 #define HEADLIGHT_PIN    14
 #define NUM_PIXELS       12
@@ -40,14 +42,18 @@ void setup () {
   // Set up the receiver
   rx.begin();
 
+  // Set up the servo driver
+  servoDriver.begin();  
+  servoDriver.setPWMFreq(60);
+    
   // Set up the camera gimbal
-  pantilt.begin(GIMBAL_PAN_PIN, GIMBAL_TILT_PIN, GIMBAL_ROLL_PIN);
+  pantilt.begin(GIMBAL_PAN_SERVO, GIMBAL_TILT_SERVO, GIMBAL_ROLL_SERVO);
   pantilt.setPanScale(45,135);
   pantilt.setTiltScale(10,170);
   pantilt.setRollScale(10,170);
 
   // Set up the track driver
-  tracks.begin(TRACK_SPEED_PIN, TRACK_STEER_PIN, TRACK_GEAR_PIN);
+  tracks.begin(TRACK_SPEED_SERVO, TRACK_STEER_SERVO, TRACK_GEAR_SERVO);
   tracks.setThrottleScale(10,170);
   tracks.setSteeringScale(10,170);
 
@@ -62,12 +68,14 @@ void setup () {
 }
 
 void showChannels ( SpektrumChannels channels) {
-  debugprint(DEBUG_TRACE, "AIL  ELE  THR  RUD  GEAR AUX1 AUX2 AUX3 AUX4 AUX5 AUX6 AUX7 AUX8");
-  debugprint(DEBUG_TRACE, "%4d %4d %4d %4d %4d %4d %4d %4d %4d %4d %4d %4d %4d ",
+  debugprint(DEBUG_TRACE, "\nAIL  ELE  THR  RUD  GEAR AUX1 AUX2 AUX3 AUX4 AUX5 AUX6 AUX7 AUX8");
+  debugprint(DEBUG_TRACE, "%4d %4d %4d %4d %4d %4d %4d %4d %4d %4d %4d %4d %4d\n",
     channels.aileron, channels.elevator, channels.throttle, channels.rudder,
     channels.gear, channels.aux1, channels.aux2, channels.aux3, channels.aux4,
     channels.aux5, channels.aux6, channels.aux7, channels.aux8
   );
+  tracks.showDebug();
+  pantilt.showDebug();
 }
   
 void loop () {
@@ -78,26 +86,9 @@ void loop () {
     // Reset the delay to 1s
     itsShowTime = millis() + 1000;
   }
-/*
+
   // Handle track motion/steering
-  if ( channels.gear < 500 ) {
-    // Put it in park
-    tracks.setThrottleScale(90,90);
-    tracks.setSteeringScale(90,90);
-  }
-  else if ( channels.gear > 769 && channels.gear < 1280 ) {
-    // Low Gear
-    tracks.setThrottleScale(65,115);
-    tracks.setSteeringScale(65,115);
-  }
-  else {
-    // Full throttle
-    tracks.setThrottleScale(45,135);
-    tracks.setSteeringScale(45,135);
-  }
-*/  
-  // Handle track motion/steering
-  int gearPos = rx.switchPos(channels.gear, 3);
+  int gearPos = rx.switchPos(CHAN_GEAR, 3);
   
   switch ( gearPos ) {
     case 0:

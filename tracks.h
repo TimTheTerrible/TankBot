@@ -1,7 +1,7 @@
 #ifndef __tracks_h__
 #define __tracks_h__
 
-#include <Servo.h>
+#include "myPWMServoDriver.h"
 
 #define DEBUG_TRACK 0x1000
 
@@ -16,6 +16,7 @@ class Tracks
   void setSteeringScale( int, int );
   void setGear( int );
   void setGearScale( int, int );
+  void showDebug();
 
   private:
 
@@ -26,9 +27,9 @@ class Tracks
   int m_gearScaleMin = 0;
   int m_gearScaleMax = 180;
   
-  Servo throttle;
-  Servo steering;
-  Servo gear;
+  myPWMServo * throttle;
+  myPWMServo * steering;
+  myPWMServo * gear;
 };
 
 extern Tracks tracks;

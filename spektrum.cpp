@@ -209,7 +209,7 @@ int SpektrumRx::switchPos ( int channel, int poles ) {
       channelVal = m_channels.aux8;
       break;
     default:
-      debugprint(DEBUG_ERROR, "Invalid channel: %d", channel);
+      debugprint(DEBUG_ERROR, "Invalid switch channel: %d", channel);
       return 0;
       break;
   }
