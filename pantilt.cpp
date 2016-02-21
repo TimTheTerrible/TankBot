@@ -46,6 +46,9 @@ void PanTilt::setRollScale(int min, int max) {
 }
 
 void PanTilt::showDebug() {
-  debugprint(DEBUG_TRACE, "Pan: %d Tilt: %d Roll: %d", pan->getAngle(), tilt->getAngle(), roll->getAngle());
+  debugprint(DEBUG_TRACE, "\nPant-Tilt Debugging");
+  debugprint(DEBUG_TRACE, "Pan angle: %d Range: %d to %d", pan->getAngle(), m_panScaleMin, m_panScaleMax);
+  debugprint(DEBUG_TRACE, "Tilt angle: %d Range: %d to %d", tilt->getAngle(), m_tiltScaleMin, m_tiltScaleMax);
+  debugprint(DEBUG_TRACE, "Roll angle: %d Range: %d to %d", roll->getAngle(), m_rollScaleMin, m_rollScaleMax);
 }
 
