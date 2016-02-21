@@ -26,34 +26,31 @@
 #define CHAN_AUX8         12
 
 typedef struct SpektrumChannels {
-  int throttle = 1024;
-  int aileron = 1024;
-  int elevator = 1024;
-  int rudder = 1024;
-  int gear = 1024;
-  int aux1 = 1024;
-  int aux2 = 1024;
-  int aux3 = 1024;
-  int aux4 = 1024;
-  int aux5 = 1024;
-  int aux6 = 1024;
-  int aux7 = 1024;
-  int aux8 = 1024;
+  uint16_t throttle = 1024;
+  uint16_t aileron = 1024;
+  uint16_t elevator = 1024;
+  uint16_t rudder = 1024;
+  uint16_t gear = 1024;
+  uint16_t aux1 = 1024;
+  uint16_t aux2 = 1024;
+  uint16_t aux3 = 1024;
+  uint16_t aux4 = 1024;
+  uint16_t aux5 = 1024;
+  uint16_t aux6 = 1024;
+  uint16_t aux7 = 1024;
+  uint16_t aux8 = 1024;
 } SpektrumChannels;
 
 class SpektrumRx
 {
   public:
-
-  bool begin();
-  void parse( uint8_t * );
-  SpektrumChannels getChannels();
-  int switchPos( int, int );
+    bool begin();
+    void parse( uint8_t * );
+    SpektrumChannels getChannels();
+    uint8_t switchPos( uint8_t, uint8_t );
 
   private:
-
-  SpektrumChannels m_channels;
-
+    SpektrumChannels m_channels;
 };
 
 extern SpektrumRx rx;

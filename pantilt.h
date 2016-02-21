@@ -8,28 +8,26 @@
 class PanTilt
 {
   public:
-
-  bool begin( int, int, int);
-  void setPan( int );
-  void setPanScale( int, int );
-  void setTilt( int );
-  void setTiltScale( int, int );
-  void setRoll( int );
-  void setRollScale( int, int );
-  void showDebug();
+    bool begin( uint8_t, uint8_t, uint8_t);
+    void setPan( uint8_t );
+    void setPanScale( uint8_t, uint8_t );
+    void setTilt( uint8_t );
+    void setTiltScale( uint8_t, uint8_t );
+    void setRoll( uint8_t );
+    void setRollScale( uint8_t, uint8_t );
+    void showDebug();
 
   private:
-
-  int m_panScaleMin = 0;
-  int m_panScaleMax = 180;
-  int m_tiltScaleMin = 0;
-  int m_tiltScaleMax = 180;
-  int m_rollScaleMin = 0;
-  int m_rollScaleMax = 180;
-
-  myPWMServo * pan;
-  myPWMServo * tilt;
-  myPWMServo * roll;
+    uint8_t m_panScaleMin = 0;
+    uint8_t m_panScaleMax = 180;
+    uint8_t m_tiltScaleMin = 0;
+    uint8_t m_tiltScaleMax = 180;
+    uint8_t m_rollScaleMin = 0;
+    uint8_t m_rollScaleMax = 180;
+  
+    myPWMServo * pan;
+    myPWMServo * tilt;
+    myPWMServo * roll;
 };
 
 extern PanTilt pantilt;

@@ -21,7 +21,7 @@
 
 #define HEADLIGHT_SERVO    14
 
-uint32_t itsShowTime = 0;
+uint32_t debugInterval = 0;
 
 myPWMServo * headlight;
 
@@ -82,17 +82,17 @@ void showChannels ( SpektrumChannels channels) {
 void loop () {
   SpektrumChannels channels = rx.getChannels();
 
-  if ( millis() > itsShowTime ) {
+  if ( millis() > debugInterval ) {
     showChannels(channels);
     tracks.showDebug();
     pantilt.showDebug();
     
     // Reset the delay to 1s
-    itsShowTime = millis() + 1000;
+    debugInterval = millis() + 1000;
   }
 
   // Handle track motion/steering
-  int gearPos = rx.switchPos(CHAN_GEAR, 3);
+  uint8_t gearPos = rx.switchPos(CHAN_GEAR, 3);
   
   switch ( gearPos ) {
     case 0:

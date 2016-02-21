@@ -13,7 +13,7 @@ SpektrumRx rx;
  * Serial Port Handler
  */
 
-int msgIndex = 0;
+uint8_t msgIndex = 0;
 uint8_t inputBuffer[MAX_MSG_LEN];
 
 void serialEvent1() {
@@ -56,6 +56,12 @@ SpektrumChannels SpektrumRx::getChannels () {
 /*
  * Spektrum Sattelite Receiver Message Format
  * 
+ * NOTE: This applies only to the specific situation
+ * I was facing: a Spektrum sattelite receiver bound 
+ * to a DX9 transmitter. Your mileage may vary if
+ * you're using a different combination of receiver 
+ * and transmitter.
+ * 
  * The receiver sends 16-byte frames. Each frame
  * contains two header bytes and six channel byte
  * pairs. The ordering of channles is arbitrary.
@@ -82,14 +88,14 @@ void SpektrumRx::parse( uint8_t * input) {
   char bLSB[9];
   char bWord[17];
   uint16_t msgWord;
-  int channelNum;
-  int channelVal;
+  uint8_t channelNum;
+  uint16_t channelVal;
 
   debugprint(DEBUG_PARSE, "\nParsing new message...");
   
   debugprint(DEBUG_PARSE, "HDR: %2.2hx:%2.2hx", input[0], input[1]);
 
-  for ( int i = 2; i < MAX_MSG_LEN; i += 2) {
+  for ( uint8_t i = 2; i < MAX_MSG_LEN; i += 2) {
     
     // What are the two bytes?
     strncpy(bMSB, byte_to_binary(input[i]), 9);
@@ -156,18 +162,9 @@ void SpektrumRx::parse( uint8_t * input) {
   }
 }
 
-int switchBin ( int value ) {
-  if ( value < 768 )
-    return 0;
-  else if ( value > 800 && value < 1300 )
-    return 1;
-  else
-    return 2;
-}
-  
-int SpektrumRx::switchPos ( int channel, int poles ) {
+uint8_t SpektrumRx::switchPos ( uint8_t channel, uint8_t poles ) {
 
-  int channelVal;
+  uint16_t channelVal;
   switch ( channel ) {
     case CHAN_THROTTLE:
       channelVal = m_channels.throttle;

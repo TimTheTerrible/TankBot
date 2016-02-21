@@ -5,44 +5,44 @@
 
 PanTilt pantilt;
 
-bool PanTilt::begin( int panPin, int tiltPin, int rollPin ) {
-  pan = servoDriver.getServo(panPin);
-  tilt = servoDriver.getServo(tiltPin);
-  roll = servoDriver.getServo(rollPin);
+bool PanTilt::begin( uint8_t panServo, uint8_t tiltServo, uint8_t rollServo ) {
+  pan = servoDriver.getServo(panServo);
+  tilt = servoDriver.getServo(tiltServo);
+  roll = servoDriver.getServo(rollServo);
   return true;
 }
 
-void PanTilt::setPan( int angle ) {
+void PanTilt::setPan( uint8_t angle ) {
   debugprint(DEBUG_PANTILT, "pan angle set to %d", angle);
   pan->setAngle(map(angle, 2048, 0, m_panScaleMin, m_panScaleMax));
 }
 
-void PanTilt::setPanScale(int min, int max) {
-  debugprint(DEBUG_PANTILT, "pan scale set to (%d,%d)", min, max);
-  m_panScaleMin = min;
-  m_panScaleMax = max;
+void PanTilt::setPanScale(uint8_t minVal, uint8_t maxVal) {
+  debugprint(DEBUG_PANTILT, "pan scale set to (%d,%d)", minVal, maxVal);
+  m_panScaleMin = minVal >=0 ? minVal : 0;
+  m_panScaleMax = maxVal <= 180 ? maxVal : 180;
 }
 
-void PanTilt::setTilt( int angle ) {
+void PanTilt::setTilt( uint8_t angle ) {
   debugprint(DEBUG_PANTILT, "tilt angle set to %d", angle);
   tilt->setAngle(map(angle, 2048, 0, m_tiltScaleMin, m_tiltScaleMax));
 }
 
-void PanTilt::setTiltScale(int min, int max) {
-  debugprint(DEBUG_PANTILT, "tilt scale set to (%d,%d)", min, max);
-  m_tiltScaleMin = min;
-  m_tiltScaleMax = max;
+void PanTilt::setTiltScale(uint8_t minVal, uint8_t maxVal) {
+  debugprint(DEBUG_PANTILT, "tilt scale set to (%d,%d)", minVal, maxVal);
+  m_tiltScaleMin = minVal >=0 ? minVal : 0;
+  m_tiltScaleMax = maxVal <= 180 ? maxVal : 180;
 }
 
-void PanTilt::setRoll( int angle ) {
+void PanTilt::setRoll( uint8_t angle ) {
   debugprint(DEBUG_PANTILT, "roll angle set to %d", angle);
   roll->setAngle(map(angle, 0, 2048, m_rollScaleMin, m_rollScaleMax));
 }
 
-void PanTilt::setRollScale(int min, int max) {
-  debugprint(DEBUG_PANTILT, "roll scale set to (%d,%d)", min, max);
-  m_rollScaleMin = min;
-  m_rollScaleMax = max;
+void PanTilt::setRollScale(uint8_t minVal, uint8_t maxVal) {
+  debugprint(DEBUG_PANTILT, "roll scale set to (%d,%d)", minVal, maxVal);
+  m_rollScaleMin = minVal >=0 ? minVal : 0;
+  m_rollScaleMax = maxVal <= 180 ? maxVal : 180;
 }
 
 void PanTilt::showDebug() {

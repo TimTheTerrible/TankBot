@@ -5,44 +5,44 @@
 
 Tracks tracks;
 
-bool Tracks::begin( int throttleServo, int steeringServo, int gearServo ) {
+bool Tracks::begin( uint8_t throttleServo, uint8_t steeringServo, uint8_t gearServo ) {
   throttle = servoDriver.getServo(throttleServo);
   steering = servoDriver.getServo(steeringServo);
   gear = servoDriver.getServo(gearServo);
   return true;
 }
 
-void Tracks::setThrottle(int angle) {
+void Tracks::setThrottle(uint8_t angle) {
   debugprint(DEBUG_TRACK, "throttle set to %d", angle);
   throttle->setAngle(map(angle, 0, 2048, m_throttleScaleMin, m_throttleScaleMax));
 }
 
-void Tracks::setThrottleScale(int min, int max) {
-  debugprint(DEBUG_TRACK, "throttle scale set to (%d,%d)", min, max);
-  m_throttleScaleMin = min;
-  m_throttleScaleMax = max;
+void Tracks::setThrottleScale(uint8_t minVal, uint8_t maxVal) {
+  debugprint(DEBUG_TRACK, "throttle scale set to (%d,%d)", minVal, maxVal);
+  m_throttleScaleMin = minVal >= 0 ? minVal : 0;
+  m_throttleScaleMax = maxVal <= 180 ? maxVal : 180;
 }
 
-void Tracks::setSteering(int angle) {
+void Tracks::setSteering(uint8_t angle) {
   debugprint(DEBUG_TRACK, "steering set to %d", angle);
   steering->setAngle(map(angle, 0, 2048, m_steeringScaleMin, m_steeringScaleMax));
 }
 
-void Tracks::setSteeringScale(int min, int max) {
-  debugprint(DEBUG_TRACK, "steering scale set to (%d,%d)", min, max);
-  m_steeringScaleMin = min;
-  m_steeringScaleMax = max;
+void Tracks::setSteeringScale(uint8_t minVal, uint8_t maxVal) {
+  debugprint(DEBUG_TRACK, "steering scale set to (%d,%d)", minVal, maxVal);
+  m_steeringScaleMin = minVal >= 0 ? minVal : 0;
+  m_steeringScaleMax = maxVal <= 180 ? maxVal : 180;
 }
 
-void Tracks::setGear(int angle) {
+void Tracks::setGear(uint8_t angle) {
   debugprint(DEBUG_TRACK, "gear set to %d", angle);
   gear->setAngle(map(angle, 0, 2048, 0, 180));
 }
 
-void Tracks::setGearScale(int min, int max) {
-  debugprint(DEBUG_TRACK, "gear scale set to (%d,%d)", min, max);
-  m_gearScaleMin = min;
-  m_gearScaleMax = max;
+void Tracks::setGearScale(uint8_t minVal, uint8_t maxVal) {
+  debugprint(DEBUG_TRACK, "gear scale set to (%d,%d)", minVal, maxVal);
+  m_gearScaleMin = minVal >= 0 ? minVal : 0;
+  m_gearScaleMax = maxVal <= 180 ? maxVal : 180;
 }
 
 void Tracks::showDebug() {
