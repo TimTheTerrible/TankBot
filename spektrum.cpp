@@ -176,13 +176,13 @@ int SpektrumRx::switchPos ( int channel, int poles ) {
       channelVal = m_channels.aileron;
       break;
     case CHAN_ELEVATOR:
-      channelVal = m_channels.aileron;
+      channelVal = m_channels.elevator;
       break;
     case CHAN_RUDDER:
-      channelVal = m_channels.aileron;
+      channelVal = m_channels.rudder;
       break;
     case CHAN_GEAR:
-      channelVal = m_channels.aileron;
+      channelVal = m_channels.gear;
       break;
     case CHAN_AUX1:
       channelVal = m_channels.aux1;
