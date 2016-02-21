@@ -214,19 +214,21 @@ int SpektrumRx::switchPos ( int channel, int poles ) {
       break;
   }
 
-  if ( poles == 2 ) {
-    return channelVal > 1024 ? 1 : 0;
-  }
-  else if ( poles == 3 ) {
-    if ( channelVal < 512 )
-      return 0;
-    else if ( channelVal < 1500 ) 
-      return 1;
-    else
-      return 2;
-  }
-  else {
-    debugprint(DEBUG_ERROR, "Invalid  number of poles: %d", poles);    
+  switch ( poles ) {
+    case 2:
+      return channelVal > 1024 ? 1 : 0;
+      break;
+    case 3:
+      if ( channelVal < 512 )
+        return 0;
+      else if ( channelVal < 1500 ) 
+        return 1;
+      else
+        return 2;
+      break;
+    default:
+      debugprint(DEBUG_ERROR, "Invalid  number of poles: %d", poles);    
+      break;
   }
   
   return 0;
