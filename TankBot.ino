@@ -19,10 +19,11 @@
 #define GIMBAL_TILT_SERVO  5
 #define GIMBAL_ROLL_SERVO  6
 
-#define HEADLIGHT_PIN    14
-#define NUM_PIXELS       12
+#define HEADLIGHT_SERVO    14
 
 uint32_t itsShowTime = 0;
+
+myPWMServo * headlight;
 
 void setup () {
   // Enable debug output
@@ -37,6 +38,7 @@ void setup () {
 
   // Wait for the it to wake up
   //while(!Serial);
+  delay(1000);
   
   debugprint(DEBUG_TRACE, "TankBot %s", VERSION);
   
@@ -59,8 +61,8 @@ void setup () {
   tracks.setSteeringScale(10,170);
 
   // Set up the headlight
-  pinMode(HEADLIGHT_PIN, OUTPUT);
-  digitalWrite(HEADLIGHT_PIN, LOW);
+  headlight = servoDriver.getServo(HEADLIGHT_SERVO);
+  headlight->setAngle(180); // full brightness
 
   debugprint(DEBUG_TRACE, "Setup is complete!");
   
@@ -113,10 +115,14 @@ void loop () {
 
   tracks.setThrottle(channels.throttle);
   tracks.setSteering(channels.rudder);
+  //tracks.setGear(channels.gear);
  
   // Handle camera motion
   pantilt.setPan(channels.aileron);
   pantilt.setTilt(channels.elevator);
   pantilt.setRoll(channels.aux1);
+
+  // Handle the headlight
+  headlight->setAngle(channels.aux2);
 
 }
