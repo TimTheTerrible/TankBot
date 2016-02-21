@@ -21,6 +21,7 @@ myPWMServo::myPWMServo(myPWMServoDriver * driver, uint8_t servoNum) {
 }
 
 void myPWMServo::setAngle(uint16_t angle) {
+  // TODO: range checking
   m_scaledAngle = map(angle, 0, 180, m_minAngle, m_maxAngle);
   m_servoDriver->setPin(m_servoNum, m_scaledAngle, 0);
 }
