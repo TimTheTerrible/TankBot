@@ -6,15 +6,15 @@
 Tracks tracks;
 
 bool Tracks::begin( uint8_t throttleServo, uint8_t steeringServo, uint8_t gearServo ) {
-  throttle = servoDriver.getServo(throttleServo);
-  steering = servoDriver.getServo(steeringServo);
-  gear = servoDriver.getServo(gearServo);
+  m_throttle = servoDriver.getServo(throttleServo);
+  m_steering = servoDriver.getServo(steeringServo);
+  m_gear = servoDriver.getServo(gearServo);
   return true;
 }
 
 void Tracks::setThrottle(uint16_t angle) {
   debugprint(DEBUG_TRACK, "throttle set to %d", angle);
-  throttle->setAngle(map(angle, 0, 2048, m_throttleScaleMin, m_throttleScaleMax));
+  m_throttle->setAngle(map(angle, 0, 2048, m_throttleScaleMin, m_throttleScaleMax));
 }
 
 void Tracks::setThrottleScale(uint8_t minVal, uint8_t maxVal) {
@@ -25,7 +25,7 @@ void Tracks::setThrottleScale(uint8_t minVal, uint8_t maxVal) {
 
 void Tracks::setSteering(uint16_t angle) {
   debugprint(DEBUG_TRACK, "steering set to %d", angle);
-  steering->setAngle(map(angle, 0, 2048, m_steeringScaleMin, m_steeringScaleMax));
+  m_steering->setAngle(map(angle, 0, 2048, m_steeringScaleMin, m_steeringScaleMax));
 }
 
 void Tracks::setSteeringScale(uint8_t minVal, uint8_t maxVal) {
@@ -36,7 +36,7 @@ void Tracks::setSteeringScale(uint8_t minVal, uint8_t maxVal) {
 
 void Tracks::setGear(uint16_t angle) {
   debugprint(DEBUG_TRACK, "gear set to %d", angle);
-  gear->setAngle(map(angle, 0, 2048, 0, 180));
+  m_gear->setAngle(map(angle, 0, 2048, 0, 180));
 }
 
 void Tracks::setGearScale(uint8_t minVal, uint8_t maxVal) {
@@ -47,8 +47,8 @@ void Tracks::setGearScale(uint8_t minVal, uint8_t maxVal) {
 
 void Tracks::showDebug() {
   debugprint(DEBUG_TRACE, "\nTracks Debugging");
-  debugprint(DEBUG_TRACE, "Throttle angle: %d Range: %d to %d", throttle->getAngle(), m_throttleScaleMin, m_throttleScaleMax);
-  debugprint(DEBUG_TRACE, "Steering angle: %d Range: %d to %d", steering->getAngle(), m_steeringScaleMin, m_steeringScaleMax);
-  debugprint(DEBUG_TRACE, "Gear angle: %d Range: %d to %d", gear->getAngle(), m_gearScaleMin, m_gearScaleMax);
+  debugprint(DEBUG_TRACE, "Throttle angle: %d Range: %d to %d", m_throttle->getAngle(), m_throttleScaleMin, m_throttleScaleMax);
+  debugprint(DEBUG_TRACE, "Steering angle: %d Range: %d to %d", m_steering->getAngle(), m_steeringScaleMin, m_steeringScaleMax);
+  debugprint(DEBUG_TRACE, "Gear angle: %d Range: %d to %d", m_gear->getAngle(), m_gearScaleMin, m_gearScaleMax);
 }
 

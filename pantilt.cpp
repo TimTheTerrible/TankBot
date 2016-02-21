@@ -6,15 +6,15 @@
 PanTilt pantilt;
 
 bool PanTilt::begin( uint8_t panServo, uint8_t tiltServo, uint8_t rollServo ) {
-  pan = servoDriver.getServo(panServo);
-  tilt = servoDriver.getServo(tiltServo);
-  roll = servoDriver.getServo(rollServo);
+  m_pan = servoDriver.getServo(panServo);
+  m_tilt = servoDriver.getServo(tiltServo);
+  m_roll = servoDriver.getServo(rollServo);
   return true;
 }
 
 void PanTilt::setPan( uint16_t angle ) {
   debugprint(DEBUG_PANTILT, "pan angle set to %d", angle);
-  pan->setAngle(map(angle, 2048, 0, m_panScaleMin, m_panScaleMax));
+  m_pan->setAngle(map(angle, 2048, 0, m_panScaleMin, m_panScaleMax));
 }
 
 void PanTilt::setPanScale(uint8_t minVal, uint8_t maxVal) {
@@ -25,7 +25,7 @@ void PanTilt::setPanScale(uint8_t minVal, uint8_t maxVal) {
 
 void PanTilt::setTilt( uint16_t angle ) {
   debugprint(DEBUG_PANTILT, "tilt angle set to %d", angle);
-  tilt->setAngle(map(angle, 2048, 0, m_tiltScaleMin, m_tiltScaleMax));
+  m_tilt->setAngle(map(angle, 2048, 0, m_tiltScaleMin, m_tiltScaleMax));
 }
 
 void PanTilt::setTiltScale(uint8_t minVal, uint8_t maxVal) {
@@ -36,7 +36,7 @@ void PanTilt::setTiltScale(uint8_t minVal, uint8_t maxVal) {
 
 void PanTilt::setRoll( uint16_t angle ) {
   debugprint(DEBUG_PANTILT, "roll angle set to %d", angle);
-  roll->setAngle(map(angle, 0, 2048, m_rollScaleMin, m_rollScaleMax));
+  m_roll->setAngle(map(angle, 0, 2048, m_rollScaleMin, m_rollScaleMax));
 }
 
 void PanTilt::setRollScale(uint8_t minVal, uint8_t maxVal) {
@@ -47,8 +47,8 @@ void PanTilt::setRollScale(uint8_t minVal, uint8_t maxVal) {
 
 void PanTilt::showDebug() {
   debugprint(DEBUG_TRACE, "\nPant-Tilt Debugging");
-  debugprint(DEBUG_TRACE, "Pan angle: %d Range: %d to %d", pan->getAngle(), m_panScaleMin, m_panScaleMax);
-  debugprint(DEBUG_TRACE, "Tilt angle: %d Range: %d to %d", tilt->getAngle(), m_tiltScaleMin, m_tiltScaleMax);
-  debugprint(DEBUG_TRACE, "Roll angle: %d Range: %d to %d", roll->getAngle(), m_rollScaleMin, m_rollScaleMax);
+  debugprint(DEBUG_TRACE, "Pan angle: %d Range: %d to %d", m_pan->getAngle(), m_panScaleMin, m_panScaleMax);
+  debugprint(DEBUG_TRACE, "Tilt angle: %d Range: %d to %d", m_tilt->getAngle(), m_tiltScaleMin, m_tiltScaleMax);
+  debugprint(DEBUG_TRACE, "Roll angle: %d Range: %d to %d", m_roll->getAngle(), m_rollScaleMin, m_rollScaleMax);
 }
 

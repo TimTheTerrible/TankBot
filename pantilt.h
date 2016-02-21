@@ -25,9 +25,9 @@ class PanTilt
     uint8_t m_rollScaleMin = 0;
     uint8_t m_rollScaleMax = 180;
   
-    myPWMServo * pan;
-    myPWMServo * tilt;
-    myPWMServo * roll;
+    myPWMServo * m_pan;
+    myPWMServo * m_tilt;
+    myPWMServo * m_roll;
 };
 
 extern PanTilt pantilt;

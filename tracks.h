@@ -25,9 +25,9 @@ class Tracks
     uint8_t m_gearScaleMin = 0;
     uint8_t m_gearScaleMax = 180;
   
-    myPWMServo * throttle;
-    myPWMServo * steering;
-    myPWMServo * gear;
+    myPWMServo * m_throttle;
+    myPWMServo * m_steering;
+    myPWMServo * m_gear;
 };
 
 extern Tracks tracks;
