@@ -5,10 +5,10 @@
 
 Tracks tracks;
 
-bool Tracks::begin( int steeringPin, int throttlePin, int gearPin ) {
-  throttle = servoDriver.getServo(throttlePin);
-  steering = servoDriver.getServo(steeringPin);
-  gear = servoDriver.getServo(gearPin);
+bool Tracks::begin( int throttleServo, int steeringServo, int gearServo ) {
+  throttle = servoDriver.getServo(throttleServo);
+  steering = servoDriver.getServo(steeringServo);
+  gear = servoDriver.getServo(gearServo);
   return true;
 }
 
