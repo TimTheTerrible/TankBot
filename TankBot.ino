@@ -77,8 +77,6 @@ void showChannels ( SpektrumChannels channels) {
     channels.gear, channels.aux1, channels.aux2, channels.aux3, channels.aux4,
     channels.aux5, channels.aux6, channels.aux7, channels.aux8
   );
-  tracks.showDebug();
-  pantilt.showDebug();
 }
   
 void loop () {
@@ -86,6 +84,9 @@ void loop () {
 
   if ( millis() > itsShowTime ) {
     showChannels(channels);
+    tracks.showDebug();
+    pantilt.showDebug();
+    
     // Reset the delay to 1s
     itsShowTime = millis() + 1000;
   }
