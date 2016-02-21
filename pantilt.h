@@ -8,12 +8,12 @@
 class PanTilt
 {
   public:
-    bool begin( uint8_t, uint8_t, uint8_t);
-    void setPan( uint8_t );
+    bool begin( uint8_t, uint8_t, uint8_t );
+    void setPan( uint16_t );
     void setPanScale( uint8_t, uint8_t );
-    void setTilt( uint8_t );
+    void setTilt( uint16_t );
     void setTiltScale( uint8_t, uint8_t );
-    void setRoll( uint8_t );
+    void setRoll( uint16_t );
     void setRollScale( uint8_t, uint8_t );
     void showDebug();
 

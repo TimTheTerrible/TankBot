@@ -12,7 +12,7 @@ bool Tracks::begin( uint8_t throttleServo, uint8_t steeringServo, uint8_t gearSe
   return true;
 }
 
-void Tracks::setThrottle(uint8_t angle) {
+void Tracks::setThrottle(uint16_t angle) {
   debugprint(DEBUG_TRACK, "throttle set to %d", angle);
   throttle->setAngle(map(angle, 0, 2048, m_throttleScaleMin, m_throttleScaleMax));
 }
@@ -23,7 +23,7 @@ void Tracks::setThrottleScale(uint8_t minVal, uint8_t maxVal) {
   m_throttleScaleMax = maxVal <= 180 ? maxVal : 180;
 }
 
-void Tracks::setSteering(uint8_t angle) {
+void Tracks::setSteering(uint16_t angle) {
   debugprint(DEBUG_TRACK, "steering set to %d", angle);
   steering->setAngle(map(angle, 0, 2048, m_steeringScaleMin, m_steeringScaleMax));
 }
@@ -34,7 +34,7 @@ void Tracks::setSteeringScale(uint8_t minVal, uint8_t maxVal) {
   m_steeringScaleMax = maxVal <= 180 ? maxVal : 180;
 }
 
-void Tracks::setGear(uint8_t angle) {
+void Tracks::setGear(uint16_t angle) {
   debugprint(DEBUG_TRACK, "gear set to %d", angle);
   gear->setAngle(map(angle, 0, 2048, 0, 180));
 }

@@ -12,7 +12,7 @@ bool PanTilt::begin( uint8_t panServo, uint8_t tiltServo, uint8_t rollServo ) {
   return true;
 }
 
-void PanTilt::setPan( uint8_t angle ) {
+void PanTilt::setPan( uint16_t angle ) {
   debugprint(DEBUG_PANTILT, "pan angle set to %d", angle);
   pan->setAngle(map(angle, 2048, 0, m_panScaleMin, m_panScaleMax));
 }
@@ -23,7 +23,7 @@ void PanTilt::setPanScale(uint8_t minVal, uint8_t maxVal) {
   m_panScaleMax = maxVal <= 180 ? maxVal : 180;
 }
 
-void PanTilt::setTilt( uint8_t angle ) {
+void PanTilt::setTilt( uint16_t angle ) {
   debugprint(DEBUG_PANTILT, "tilt angle set to %d", angle);
   tilt->setAngle(map(angle, 2048, 0, m_tiltScaleMin, m_tiltScaleMax));
 }
@@ -34,7 +34,7 @@ void PanTilt::setTiltScale(uint8_t minVal, uint8_t maxVal) {
   m_tiltScaleMax = maxVal <= 180 ? maxVal : 180;
 }
 
-void PanTilt::setRoll( uint8_t angle ) {
+void PanTilt::setRoll( uint16_t angle ) {
   debugprint(DEBUG_PANTILT, "roll angle set to %d", angle);
   roll->setAngle(map(angle, 0, 2048, m_rollScaleMin, m_rollScaleMax));
 }

@@ -9,11 +9,11 @@ class Tracks
 {
   public:
     bool begin( uint8_t, uint8_t, uint8_t );
-    void setThrottle( uint8_t );
+    void setThrottle( uint16_t );
     void setThrottleScale( uint8_t, uint8_t );
-    void setSteering( uint8_t );
+    void setSteering( uint16_t );
     void setSteeringScale( uint8_t, uint8_t );
-    void setGear( uint8_t );
+    void setGear( uint16_t );
     void setGearScale( uint8_t, uint8_t );
     void showDebug();
 
