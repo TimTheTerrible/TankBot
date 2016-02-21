@@ -19,7 +19,7 @@
 #define GIMBAL_TILT_SERVO  5
 #define GIMBAL_ROLL_SERVO  6
 
-#define HEADLIGHT_SERVO    14
+#define HEADLIGHT_SERVO    7
 
 uint32_t debugInterval = 0;
 
@@ -72,7 +72,7 @@ void setup () {
 
 void showChannels ( SpektrumChannels channels) {
   debugprint(DEBUG_TRACE, "\nAIL  ELE  THR  RUD  GEAR AUX1 AUX2 AUX3 AUX4 AUX5 AUX6 AUX7 AUX8");
-  debugprint(DEBUG_TRACE, "%4d %4d %4d %4d %4d %4d %4d %4d %4d %4d %4d %4d %4d\n",
+  debugprint(DEBUG_TRACE, "%4d %4d %4d %4d %4d %4d %4d %4d %4d %4d %4d %4d %4d",
     channels.aileron, channels.elevator, channels.throttle, channels.rudder,
     channels.gear, channels.aux1, channels.aux2, channels.aux3, channels.aux4,
     channels.aux5, channels.aux6, channels.aux7, channels.aux8
@@ -86,6 +86,7 @@ void loop () {
     showChannels(channels);
     tracks.showDebug();
     pantilt.showDebug();
+    debugprint(DEBUG_TRACE, "Headlight: %d", headlight->getAngle());
     
     // Reset the delay to 1s
     debugInterval = millis() + 1000;
@@ -96,6 +97,7 @@ void loop () {
   
   switch ( gearPos ) {
     case 0:
+      // Park
       tracks.setThrottleScale(90,90);
       tracks.setSteeringScale(90,90);
       break;
@@ -124,6 +126,6 @@ void loop () {
   pantilt.setRoll(channels.aux1);
 
   // Handle the headlight
-  headlight->setAngle(channels.aux2);
+  headlight->setAngle(map(channels.aux2, 0, 2048, 0, 180));
 
 }
