@@ -8,20 +8,21 @@
 myPWMServoDriver servoDriver = myPWMServoDriver();
 
 myPWMServo * myPWMServoDriver::getServo(uint8_t servoNum) {
-  return new myPWMServo(servoNum);
+  return new myPWMServo(this, servoNum);
 }
 
 /*
  * myPWMServo
  */
 
-myPWMServo::myPWMServo(uint8_t servoNum) {
+myPWMServo::myPWMServo(myPWMServoDriver * driver, uint8_t servoNum) {
+  m_servoDriver = driver;
   m_servoNum = servoNum;
 }
 
 void myPWMServo::setAngle(uint16_t angle) {
   m_scaledAngle = map(angle, 0, 180, m_minAngle, m_maxAngle);
-  servoDriver.setPin(m_servoNum, m_scaledAngle, 0);
+  m_servoDriver->setPin(m_servoNum, m_scaledAngle, 0);
 }
 
 void myPWMServo::setScale(uint16_t minAngle, uint16_t maxAngle) {

@@ -12,12 +12,13 @@ class myPWMServoDriver : public Adafruit_PWMServoDriver {
 
 class myPWMServo {
   public:
-    myPWMServo(uint8_t servoNum);
+    myPWMServo(myPWMServoDriver * driver, uint8_t servoNum);
     void setAngle(uint16_t angle);
     void setScale(uint16_t minAngle, uint16_t maxAngle);
     uint16_t getAngle();
 
   private:
+    myPWMServoDriver * m_servoDriver;
     uint8_t m_servoNum;
     uint16_t m_minAngle = 150;
     uint16_t m_maxAngle = 600;
