@@ -52,8 +52,8 @@ void setup () {
   // Set up the camera gimbal
   pantilt.begin(GIMBAL_PAN_SERVO, GIMBAL_TILT_SERVO, GIMBAL_ROLL_SERVO);
   pantilt.setPanScale(45,135);
-  pantilt.setTiltScale(10,170);
-  pantilt.setRollScale(10,170);
+  pantilt.setTiltScale(45,135);
+  pantilt.setRollScale(0,180);
 
   // Set up the track driver
   tracks.begin(TRACK_SPEED_SERVO, TRACK_STEER_SERVO, TRACK_GEAR_SERVO);
