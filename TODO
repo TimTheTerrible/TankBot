@@ -1,1 +1,10 @@
-- Use SerialEvent1()
+1. Clean up the angle/pulsewidth mess:
+   - rx emits words in the range of 0..2048
+   - pantilt and tracks expect that, and send angles in the range of 0..180 to the servo driver
+   - the servo driver expects that, and sends pulsewidths to the PWM chip in the range of 0..4095
+
+   This leads to lots of sloppy map() conversions.
+
+   Unify everybody to use pulsewidths, and the servo driver can simply scale the values 2x.
+
+2. Implement dead zones

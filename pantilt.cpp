@@ -1,4 +1,3 @@
-#include "WProgram.h"
 #include "debugprint.h"
 #include "pantilt.h"
 #include "myPWMServoDriver.h"

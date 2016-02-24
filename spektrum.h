@@ -1,5 +1,3 @@
-#include <stdint.h>
-
 #ifndef __spektrum_h__
 #define __spektrum_h__
 
