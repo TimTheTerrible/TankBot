@@ -1,5 +1,6 @@
 #include <Wire.h>
 #include <Adafruit_PWMServoDriver.h>
+#include <Adafruit_NeoPixel.h>
 #include "myPWMServoDriver.h"
 
 #include "debugprint.h"
@@ -19,11 +20,14 @@
 #define GIMBAL_TILT_SERVO  5
 #define GIMBAL_ROLL_SERVO  6
 
-#define HEADLIGHT_SERVO    7
+#define NUM_PIXELS         12
+#define HEADLIGHT_PIN      2
+
+Adafruit_NeoPixel headlight = Adafruit_NeoPixel(NUM_PIXELS, HEADLIGHT_PIN, NEO_GRB + NEO_KHZ800);
 
 uint32_t debugInterval = 0;
 
-myPWMServo * headlight;
+uint8_t oldHeadlightPos = -1;
 
 void setup () {
   // Enable debug output
@@ -61,8 +65,16 @@ void setup () {
   tracks.setSteeringScale(10,170);
 
   // Set up the headlight
-  headlight = servoDriver.getServo(HEADLIGHT_SERVO);
-  headlight->setAngle(180); // full brightness
+  headlight.begin();
+  
+  debugprint(DEBUG_TRACE, "headlight.numPixels() = %d", headlight.numPixels());
+  
+  uint32_t color = headlight.Color(128,128,128);
+  
+  for ( uint8_t i = 0; i < headlight.numPixels(); i++ ) {
+    headlight.setPixelColor(i, color);
+  }
+  headlight.show();
 
   debugprint(DEBUG_TRACE, "Setup is complete!");
   
@@ -86,7 +98,7 @@ void loop () {
     showChannels(channels);
     tracks.showDebug();
     pantilt.showDebug();
-    debugprint(DEBUG_TRACE, "Headlight: %d", headlight->getAngle());
+    debugprint(DEBUG_TRACE, "Last Headlight Setting: %d", oldHeadlightPos);
     
     // Reset the delay to 1s
     debugInterval = millis() + 1000;
@@ -112,7 +124,7 @@ void loop () {
       tracks.setSteeringScale(45,135);
       break;
     default:
-      debugprint(DEBUG_ERROR, "Invalid switch position: %d", gearPos);
+      debugprint(DEBUG_ERROR, "Invalid gear switch position: %d", gearPos);
       break;
   }
 
@@ -126,6 +138,28 @@ void loop () {
   pantilt.setRoll(channels.aux1);
 
   // Handle the headlight
-  headlight->setAngle(map(channels.aux2, 0, 2048, 0, 180));
-
+  uint8_t headlightPos = rx.switchPos(CHAN_AUX2, 3);
+  
+  if ( headlightPos != oldHeadlightPos ) {
+    debugprint(DEBUG_TRACE, "headlight switch changed!");
+    switch ( headlightPos ) {
+      case 0:
+        // Off
+        headlight.setBrightness(64);
+        break;
+      case 1:
+        // Low brightness
+        headlight.setBrightness(128);
+        break;
+      case 2:
+        // Full brightness
+        headlight.setBrightness(255);
+        break;
+      default:
+        debugprint(DEBUG_ERROR, "Invalid headlight switch position: %d", headlightPos);
+        break;
+    }
+    headlight.show();
+    oldHeadlightPos = headlightPos;
+  }
 }
