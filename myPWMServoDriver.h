@@ -20,8 +20,8 @@ class myPWMServo {
   private:
     myPWMServoDriver * m_servoDriver;
     uint8_t m_servoNum;
-    uint16_t m_minAngle = 150;
-    uint16_t m_maxAngle = 600;
+    uint16_t m_minAngle = 45;
+    uint16_t m_maxAngle = 705;
     uint16_t m_scaledAngle = m_minAngle + ( ( m_maxAngle - m_minAngle ) / 2 );
 };
 
